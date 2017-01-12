@@ -2,6 +2,7 @@ import requests
 from regex_patterns import near_results, meaning_results, entity
 import sqlite3
 import os
+from models import Hasil
 
 EXPIRED_AFTER = 1 # in days
 
