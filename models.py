@@ -50,6 +50,8 @@ class DatabaseConnection(object):
 
 
 class Pencarian(object):
+    """Models untuk tabel pencarian
+    params: id, query, timestamp"""
 
     def __init__(self, id, query, timestamp):
         self.id = id
@@ -67,6 +69,8 @@ class Pencarian(object):
         cursor.execute(query, {'query': q})
 
 class Hasil(object):
+    """Model untuk tabel hasil,
+    params : id, query_id, label, arti"""
 
     def __init__(self, id, query_id, label, arti):
         self.id = id
@@ -88,7 +92,7 @@ class Hasil(object):
             
             rows = cursor.execute(query, {'query': q,
                                           'expire_after': expire_after})
-            return cursor
+            return HasilCollections(rows)
 
     @staticmethod
     @db_transaction
@@ -106,4 +110,23 @@ class Hasil(object):
         cursor.executemany(query, data)
         
 
-                
+class HasilCollections(object):
+    """Karena hasil adalah generator object, 
+    maka hanya bisa kita lakukan sekali saja:
+    - untuk iterasi
+    """
+    def __init__(self, collections):
+        # self.collections = collections
+        import itertools
+
+        self.lama, self.baru = itertools.tee(collections)
+        self.count = sum(1 for _ in self.baru)
+
+    def __iter__(self):
+        return (Hasil(*row) for row in self.lama)
+
+    def __len__(self):
+        return self.count
+
+    def count(self):
+        return self.count
