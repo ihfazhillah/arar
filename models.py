@@ -18,7 +18,8 @@ def db_transaction(func):
     def _db_transaction(*args, **kwargs):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            func(cursor, *args, **kwargs)
+            ret = func(cursor, *args, **kwargs)
+            return ret
     return _db_transaction
 
 
@@ -87,8 +88,7 @@ class Hasil(object):
             
             rows = cursor.execute(query, {'query': q,
                                           'expire_after': expire_after})
-            for row in rows:
-                print(row)
+            return cursor
 
     @staticmethod
     @db_transaction
