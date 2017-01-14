@@ -27,8 +27,8 @@ def index():
         <h2>نتائج عن بحثك....</h2>
         {% autoescape false %}
         {% for hsl in resp %}
-        <h3>{{hsl[2]}}</h3>
-        <p>{{hsl[3].replace('\n', '<br/>')}}</p>
+        <h3>{{hsl.label}}</h3>
+        <p>{{hsl.arti.replace('\n', '<br/>')}}</p>
         {% endfor %}
         {% endautoescape %}
         {% else %}
