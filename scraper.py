@@ -11,24 +11,27 @@ create_tables()
 def get_meaning(q):
     query_db = Hasil.select(q, EXPIRED_AFTER)
 
-    if query_db.fetchone() is None:
-        Pencarian.insert(q)
+    if len(query_db) == 0:
+        Pencarian.insert(q=q)
 
         resp = requests.get(Endpoint.AL_WASEETH.format(q=q))
 
-        entity = list(get_entity(meaning_results.search(resp.text).group(0)))
+        try:
+            entity = list(get_entity(meaning_results.search(resp.text).group(0)))
+        except AttributeError:
+            return
+
         entities = [(x.group('label'),
                      x.group('arti').replace('<br/>', '\n'),
                      q) for x in entity]
 
-        Hasil.insert_many(entities)
+        Hasil.insert_many(data=entities)
 
-        rows = Hasil.select(q, expire_after=EXPIRED_AFTER)
+        rows = Hasil.select(q=q, expire_after=EXPIRED_AFTER)
 
-        return rows.fetchall()
+        return rows
 
-    rows = Hasil.select(q, EXPIRED_AFTER)
-    return rows.fetchall()
+    return query_db
 
 
 def get_near(q):
