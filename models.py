@@ -58,7 +58,7 @@ class Hasil(object):
     @db_transaction
     def select(cursor, q, expire_after=None):
         if expire_after:
-            query = ("""SELECT h.* FROM hasil h
+            query = """SELECT h.* FROM hasil h
                      JOIN pencarian p ON (p.id=h.query_id)
                      WHERE p.query=:query and 
                      CAST(                     
