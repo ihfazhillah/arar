@@ -128,5 +128,6 @@ class HasilCollections(object):
     def __len__(self):
         return self.count
 
-    def count(self):
+    def length(self):
+        """return length of HasilCollections"""
         return self.count
