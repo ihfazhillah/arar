@@ -22,6 +22,26 @@ def db_transaction(func):
     return _db_transaction
 
 
+@db_transaction
+def create_tables(cursor):
+    """Fungsi untuk membuat table yang diperlukan"""
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS
+                   pencarian(
+                   timestamp DATETIME NOT NULL,
+                   query TEXT NOT NULL,
+                   id INTEGER PRIMARY KEY AUTOINCREMENT)
+                   """)
+    cursor.execute("""
+                   CREATE TABLE IF NOT EXISTS
+                   hasil(
+                   id INTEGER PRIMARY KEY AUTOINCREMENT,
+                   query_id INTEGER,
+                   label TEXT NOT NULL,
+                   arti TEXT NOT NULL,
+                   FOREIGN KEY(query_id) REFERENCES pencarian(id))
+    """)
+
 
 class DatabaseConnection(object):
     def __init__(self):
