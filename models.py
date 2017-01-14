@@ -1,3 +1,4 @@
+# pylint : disabled=C0103,W0622
 """Model module"""
 
 import sqlite3
@@ -44,23 +45,18 @@ def create_tables(cursor):
     """)
 
 
-class DatabaseConnection(object):
-    def __init__(self):
-        self.connection = sqlite3.connect(DB_PATH)
-
-
 class Pencarian(object):
     """Models untuk tabel pencarian
     params: id, query, timestamp"""
-
-    def __init__(self, id, query, timestamp):
-        self.id = id
+    def __init__(self, id, query, timestamp): 
+        self.id = id 
         self.query = query
         self.timestamp = timestamp
 
     @staticmethod
     @db_transaction
     def insert(cursor, q):
+        """Memasukkan pencarian"""
         query = """INSERT INTO pencarian
                    (query, timestamp)
                    VALUES
@@ -82,6 +78,12 @@ class Hasil(object):
     @staticmethod
     @db_transaction
     def select(cursor, q, expire_after=None):
+        """mendapatkan semua hasil berdasarkan query(q) dan
+        timestamp <= (expire_after)
+
+        Bila expire_after None maka akan mengebalikan NotImplementedError
+
+        return HasilCollections"""
         if expire_after:
             query = """SELECT h.* FROM hasil h
                      JOIN pencarian p ON (p.id=h.query_id)
@@ -93,6 +95,7 @@ class Hasil(object):
             rows = cursor.execute(query, {'query': q,
                                           'expire_after': expire_after})
             return HasilCollections(rows)
+        raise NotImplementedError
 
     @staticmethod
     @db_transaction
