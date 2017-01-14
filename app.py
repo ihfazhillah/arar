@@ -1,6 +1,6 @@
 from flask import Flask, render_template_string, request
 from scraper import get_meaning
-import timeit
+import datetime
 
 app = Flask(__name__)
 
@@ -10,10 +10,10 @@ def index():
     # url = Endpoint.AL_WASEETH.format(q='كرم')
     if request.args:
         q = request.args.get('q')
-        start = timeit.timeit()
+        start = datetime.datetime.now()
         resp = get_meaning(q)
-        end = timeit.timeit()
-        elapsed = start - end
+        end = datetime.datetime.now()
+        elapsed = end - start
     else:
         resp = None
         elapsed = None
@@ -27,8 +27,8 @@ def index():
         <h2>نتائج عن بحثك....</h2>
         {% autoescape false %}
         {% for hsl in resp %}
-        <h3>{{hsl[0]}}</h3>
-        <p>{{hsl[1].replace('\n', '<br/>')}}</p>
+        <h3>{{hsl[2]}}</h3>
+        <p>{{hsl[3].replace('\n', '<br/>')}}</p>
         {% endfor %}
         {% endautoescape %}
         {% else %}
