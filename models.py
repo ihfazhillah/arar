@@ -4,7 +4,7 @@
 import sqlite3
 import os
 from functools import wraps
-
+from regex_patterns import tags
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'req.db')
 
@@ -111,6 +111,13 @@ class Hasil(object):
                           WHERE query=?))"""
 
         cursor.executemany(query, data)
+
+    def strip_tags(self):
+        """Menghilangkan tags"""
+
+        self.label = tags.sub("", self.label)
+        self.arti = tags.sub("", self.arti)
+        return self
         
 
 class HasilCollections(object):
