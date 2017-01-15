@@ -27,6 +27,7 @@ def index():
         <h2>نتائج عن بحثك....</h2>
         {% autoescape false %}
         {% for hsl in resp %}
+        {% set hsl = hsl.strip_tags() %}
         <h3>{{hsl.label}}</h3>
         <p>{{hsl.arti.replace('\n', '<br/>')}}</p>
         {% endfor %}
