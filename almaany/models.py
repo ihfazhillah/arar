@@ -4,9 +4,7 @@
 import sqlite3
 import os
 from functools import wraps
-from regex_patterns import TAGS
-
-DB_PATH = os.path.join(os.path.dirname(__file__), 'req.db')
+from config import TAGS, DB_ABS_PATH
 
 
 def db_transaction(func):
@@ -17,7 +15,7 @@ def db_transaction(func):
     """
     @wraps(func)
     def _db_transaction(*args, **kwargs):
-        with sqlite3.connect(DB_PATH) as connection:
+        with sqlite3.connect(DB_ABS_PATH) as connection:
             cursor = connection.cursor()
             ret = func(cursor, *args, **kwargs)
             return ret

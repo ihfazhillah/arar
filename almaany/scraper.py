@@ -1,9 +1,7 @@
 import requests
 from models import Hasil, Pencarian, create_tables
 from parser import Parser
-
-
-EXPIRED_AFTER = 10 # in days
+from config import EXPIRED_AFTER
 
 create_tables()
 

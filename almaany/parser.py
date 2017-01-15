@@ -1,5 +1,5 @@
 """Parser module, disini ada parser object"""
-from regex_patterns import ENTITY, MEANING_RESULT, TAGS
+from config import ENTITY, MEANING_RESULT, TAGS
 
 
 class Parser(object):
