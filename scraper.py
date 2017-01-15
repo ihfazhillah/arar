@@ -3,6 +3,8 @@ from regex_patterns import near_results, meaning_results, entity
 import sqlite3
 import os
 from models import Hasil, Pencarian, create_tables
+from parser import Parser
+
 
 EXPIRED_AFTER = 10 # in days
 
@@ -16,14 +18,8 @@ def get_meaning(q):
 
         resp = requests.get(Endpoint.AL_WASEETH.format(q=q))
 
-        try:
-            entity = list(get_entity(meaning_results.search(resp.text).group(0)))
-        except AttributeError:
-            return
-
-        entities = [(x.group('label'),
-                     x.group('arti').replace('<br/>', '\n'),
-                     q) for x in entity]
+        parser = Parser(resp.text)
+        entities = parser.get_entities_with_query(q)
 
         Hasil.insert_many(data=entities)
 
@@ -32,19 +28,6 @@ def get_meaning(q):
         return rows
 
     return query_db
-
-
-def get_near(q):
-    resp = requests.get(Endpoint.AL_WASEETH.format(q=q))
-    return near_results.search(resp.text).group(0)
-
-
-def get_entity(mean):
-    """mean: hasil dari get_meaning / get_near
-
-    return iterator object dari re.finditer"""
-    return entity.finditer(mean)
-
 
 class Endpoint(object):
     AL_WASEETH = "http://www.almaany.com/ar/dict/ar-ar/{q}/?c=المعجم الوسيط"
