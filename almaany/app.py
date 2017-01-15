@@ -1,5 +1,6 @@
 from flask import Flask, render_template_string, request
-from scraper import Almaany
+# from almaany.scraper import Almaany
+from almaany import waseeth
 import datetime
 
 app = Flask(__name__)
@@ -11,8 +12,9 @@ def index():
     if request.args:
         q = request.args.get('q')
         start = datetime.datetime.now()
-        almaany = Almaany('waseeth', 10)
-        resp = almaany.tarjamah(q)
+        # almaany = Almaany('waseeth', 10)
+        # resp = almaany.tarjamah(q)
+        resp = waseeth(q, 10)
         end = datetime.datetime.now()
         elapsed = end - start
     else:

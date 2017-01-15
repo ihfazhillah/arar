@@ -1,7 +1,6 @@
 import requests
-from models import Hasil, Pencarian, create_tables
-from parser import Parser
-from config import EXPIRED_AFTER
+from almaany.models import Hasil, Pencarian, create_tables
+from almaany.parser import Parser
 
 create_tables()
 

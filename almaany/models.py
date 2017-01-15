@@ -4,7 +4,7 @@
 import sqlite3
 import os
 from functools import wraps
-from config import TAGS, DB_ABS_PATH
+from almaany.config import TAGS, DB_ABS_PATH
 
 
 def db_transaction(func):

@@ -1,5 +1,5 @@
 """Parser module, disini ada parser object"""
-from config import ENTITY, MEANING_RESULT, TAGS
+from almaany.config import ENTITY, MEANING_RESULT, TAGS
 
 
 class Parser(object):
