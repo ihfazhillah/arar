@@ -1,10 +1,10 @@
-# pylint : disabled=C0103,W0622
+# pylint : disable=C0103,W0622
 """Model module"""
 
 import sqlite3
 import os
 from functools import wraps
-from regex_patterns import tags
+from regex_patterns import TAGS
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'req.db')
 
@@ -115,8 +115,8 @@ class Hasil(object):
     def strip_tags(self):
         """Menghilangkan tags"""
 
-        self.label = tags.sub("", self.label)
-        self.arti = tags.sub("", self.arti)
+        self.label = TAGS.sub("", self.label)
+        self.arti = TAGS.sub("", self.arti)
         return self
         
 

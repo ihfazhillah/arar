@@ -1,5 +1,5 @@
 """Parser module, disini ada parser object"""
-from regex_patterns import entity, meaning_results, tags
+from regex_patterns import ENTITY, MEANING_RESULT, TAGS
 
 
 class Parser(object):
@@ -12,7 +12,7 @@ class Parser(object):
     def meaning(src):
         """mendapatkan result dengan class=meaning_results
         src: source code dari html"""
-        mean = meaning_results.search(src).group(0)
+        mean = MEANING_RESULT.search(src).group(0)
         return mean
 
     @staticmethod
@@ -20,7 +20,7 @@ class Parser(object):
         """Mendapatkan entity dari meaning...
 
         mean: kembalian dari Parser.meaning"""
-        entities = entity.finditer(mean)
+        entities = ENTITY.finditer(mean)
         return entities
 
     def get_entities_with_query(self, query):
@@ -44,4 +44,4 @@ class Parser(object):
     @staticmethod
     def strip_tag(src):
         """strip tags"""
-        return tags.sub("", src)
+        return TAGS.sub("", src)

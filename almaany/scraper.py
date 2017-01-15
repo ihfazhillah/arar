@@ -1,7 +1,4 @@
 import requests
-from regex_patterns import near_results, meaning_results, entity
-import sqlite3
-import os
 from models import Hasil, Pencarian, create_tables
 from parser import Parser
 
@@ -19,13 +16,17 @@ def get_meaning(q):
         resp = requests.get(Endpoint.AL_WASEETH.format(q=q))
 
         parser = Parser(resp.text)
+
         entities = parser.get_entities_with_query(q)
 
-        Hasil.insert_many(data=entities)
+        if entities:
 
-        rows = Hasil.select(q=q, expire_after=EXPIRED_AFTER)
+            Hasil.insert_many(data=entities)
 
-        return rows
+            rows = Hasil.select(q=q, expire_after=EXPIRED_AFTER)
+
+            return rows
+        return
 
     return query_db
 
